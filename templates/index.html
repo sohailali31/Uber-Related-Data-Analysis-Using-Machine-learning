@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>KMeans Clustering Demo</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            color: #333333;
+            text-shadow: 2px 2px #cccccc;
+        }
+        form {
+            text-align: center;
+            margin-top: 50px;
+            border: 1px solid #cccccc;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            width: 50%;
+            margin: 0 auto;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        p {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 20px;
+            color: #333333;
+        }
+        #map {
+            height: 500px; /* Adjust height to increase map size */
+            width: 100%;
+            margin-top: 50px;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 2px 2px 5px #cccccc;
+        }
+        .error-message {
+            color: red;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>KMeans Clustering Demo</h1>
+    <form method="POST">
+        <p>Select a location on the map to get latitude and longitude</p>
+        <input type="hidden" id="lat" name="lat" required>
+        <input type="hidden" id="lon" name="lon" required>
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+        <input type="submit" value="Submit">
+    </form>
+    
+    <!-- Map container -->
+    <div id="map"></div>
+
+    <!-- Display submitted latitude and longitude values -->
+    {% if lat and lon %}
+        <p>Input latitude: {{ lat }}</p>
+        <p>Input longitude: {{ lon }}</p>
+    {% endif %}
+
+    <!-- Display cluster results -->
+    {% if cluster is not none %}
+        {% if cluster == 0 %}
+            <p>Predicted cluster: {{ cluster }}</p>
+            <p>Near New York.</p>
+        {% elif cluster == 1 %}
+            <p>Predicted cluster: {{ cluster }}</p>
+            <p>Near Rikers Island.</p>
+        {% elif cluster == 2 %}
+            <p>Predicted cluster: {{ cluster }}</p>
+            <p>Near Manhattan.</p>
+        {% elif cluster == 3 %}
+            <p>Predicted cluster: {{ cluster }}</p>
+            <p>Near NY 25A.</p>
+        {% elif cluster == 4 %}
+            <p>Predicted cluster: {{ cluster }}</p>
+            <p>Near Park Avenue.</p>
+        {% elif cluster == 5 %}
+            <p>Predicted cluster: {{ cluster }}</p>
+            <p>Near John F Kennedy International Airport.</p>
+        {% elif cluster == 6 %}
+            <p>Predicted cluster: {{ cluster }}</p>
+            <p>Near Evergreen Cemetery.</p>
+        {% endif %}
+    {% endif %}
+
+    <!-- Leaflet.js for interactive map -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize map centered on New York with zoom level 10
+        var map = L.map('map').setView([40.7128, -74.0060], 10);
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Marker to show selected location
+        var marker;
+
+        // Function to handle map click
+        function onMapClick(e) {
+            var lat = e.latlng.lat;
+            var lon = e.latlng.lng;
+
+            // Update hidden fields with selected coordinates
+            document.getElementById('lat').value = lat;
+            document.getElementById('lon').value = lon;
+
+            // Add marker or move it to the clicked location
+            if (marker) {
+                marker.setLatLng(e.latlng);
+            } else {
+                marker = L.marker(e.latlng).addTo(map);
+            }
+        }
+
+        // Attach map click event
+        map.on('click', onMapClick);
+    </script>
+</body>
+</html>

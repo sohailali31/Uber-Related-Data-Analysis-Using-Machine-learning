@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uber Data Clustering</title>
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Uber Data Clustering</h1>
+    <form method="POST" action="{{ url_for('predict') }}">
+        <label for="latitude">Latitude:</label>
+        <input type="text" id="latitude" name="latitude" required>
+        <br>
+        <label for="longitude">Longitude:</label>
+        <input type="text" id="longitude" name="longitude" required>
+        <br><br>
+        <button type="submit">Predict Cluster</button>
+    </form>
+    <br><br>
+    <div id="map"></div>
+    
+    <script>
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12,
+                center: { lat: 40.7589, lng: -73.9851 }  // Default to New York City
+            });
+
+            const labels = ['Cluster 1', 'Cluster 2', 'Cluster 3', 'Cluster 4', 'Cluster 5'];
+            const colors = ['red', 'blue', 'green', 'cyan', 'magenta'];
+
+            // Cluster centers rendering
+            const clusterCenters = {{ cluster_centers|tojson }};
+            clusterCenters.forEach((center, index) => {
+                new google.maps.Marker({
+                    position: { lat: center[0], lng: center[1] },
+                    map: map,
+                    label: labels[index],
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillColor: colors[index],
+                        fillOpacity: 1,
+                        strokeWeight: 0
+                    }
+                });
+            });
+
+            // Predicted point marker
+            const prediction = {{ prediction|tojson }};
+            if (prediction) {
+                new google.maps.Marker({
+                    position: { lat: prediction[0], lng: prediction[1] },
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                        scale: 5,
+                        fillColor: 'yellow',
+                        fillOpacity: 1,
+                        strokeWeight: 1,
+                        strokeColor: 'black'
+                    },
+                    title: "Predicted Cluster"
+                });
+            }
+        }
+    </script>
+    
+    <!-- Google Maps API with callback to initMap function -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+</body>
+</html>
