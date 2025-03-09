@@ -1,22 +1,58 @@
-# Uber-Data_Analysis
- This project analyzes multiple attributes related to Uber cabs that allows to get better insights regarding the functioning of the multi national cab company.
+# Uber-Related Data Analysis Using Machine Learning
 
- Link to the dataset: https://www.kaggle.com/fivethirtyeight/uber-pickups-in-new-york-city
+This project uses Flask, Folium, and K-Means clustering to analyze Uber-related data, visualize clusters on a map, and predict cluster locations based on user input coordinates.
 
- Technologies used: Python, Jupyter Notebook, Pandas, Numpy, Seaborn, Matplotlib.
+## Features
+- Load Uber dataset and apply K-Means clustering.
+- Visualize cluster centroids on an interactive Folium map.
+- Predict cluster membership based on user-provided latitude and longitude.
+- Display an interactive map with markers for clusters and user input locations.
 
- The dataset for this project contains information regarding the Uber cab rides taken place in New York, United States from April 2014 to September 2014.
+## Installation
 
- The files are separated by month and each has the following columns:
+### 1. Clone the Repository
+```sh
+git clone https://github.com/sohailali31/Uber-Related-Data-Analysis-Using-Machine-learning.git
+cd Uber-Related-Data-Analysis-Using-Machine-learning
+```
 
-  Date/Time : The date and time of the Uber pickup
+### 2. Create a Virtual Environment (Optional but Recommended)
+```sh
+python -m venv venv
+source venv/bin/activate  # On macOS/Linux
+venv\Scripts\activate  # On Windows
+```
 
-  Lat : The latitude of the Uber pickup
+### 3. Install Dependencies
+```sh
+pip install -r requirements.txt
+```
 
-  Lon : The longitude of the Uber pickup
+### 4. Run the Application
+```sh
+python app.py
+```
 
-  Base : The TLC base company code affiliated with the Uber pickup
+The application will be accessible at `http://127.0.0.1:5000/`.
 
-  Using analytical techniques, attributes such as the day and hour at which maximum Uber rides take place, the month with the maximum Uber rides, number of monthly rides, etc. are analyzed.
+## Usage
+1. Open the web app in a browser.
+2. Enter latitude and longitude values.
+3. Click submit to see the predicted cluster and an interactive map with cluster centroids.
 
-  Finally, a Demand Vs Supply chart has been plotted using matplot to find out the most successful base.
+## Technologies Used
+- **Python**
+- **Flask** (for web framework)
+- **Folium** (for interactive maps)
+- **Scikit-learn** (for K-Means clustering)
+- **Pandas** (for data manipulation)
+
+## Dataset
+The dataset used is `uber-raw-data-sep14.csv`, which contains latitude and longitude points of Uber pickups in September 2014.
+Link to the dataset: https://www.kaggle.com/fivethirtyeight/uber-pickups-in-new-york-city
+
+## License
+This project is open-source and available under the [MIT License](LICENSE).
+
+
+
